@@ -1,6 +1,6 @@
 # Gaia's Seed: A Protocol for Infinite Wealth
 
-## **Version: 0.9**
+## **Version: 0.0.9**
 
 ### **Date: 2025-09-15**
 
