@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+// Gaia's Seed: A Protocol for Problem-Based Advertising and Resource Allocation
+// This protocol defines the structure for a new kind of advertising that
+// leverages a two-edged approach to create and eliminate.
+
+message AdContent {
+  // A unique identifier for the ad, linking it to a specific problem/solution.
+  string ad_id = 1;
+  
+  // A brief, descriptive title for the ad.
+  string title = 2;
+  
+  // The two-edged message.
+  string message = 3;
+  
+  // Data about the specific problem being addressed (e.g., location, type of issue).
+  Problem problem_addressed = 4;
+  
+  // Data about the solution being offered.
+  Solution solution_offered = 5;
+}
+
+message Problem {
+  // A unique identifier for the problem.
+  string problem_id = 1;
+  
+  // A description of the problem (e.g., "water scarcity in region X").
+  string description = 2;
+  
+  // Geographic coordinates of the problem.
+  string location = 3;
+}
+
+message Solution {
+  // A unique identifier for the solution.
+  string solution_id = 1;
+  
+  // A description of the solution (e.g., "deployment of solar-powered water purifiers").
+  string description = 2;
+  
+  // The type of resource being created or allocated (e.g., "clean water", "energy").
+  string resource_type = 3;
+}
+
+message AdOriginator {
+  // A unique, anonymous identifier for the ad's source. This is the "important person" who
+  // doesn't want to be known, but whose intention is pure.
+  string originator_id = 1;
+  
+  // A field for a brief, personalized message from the originator.
+  string personalized_message = 2;
+}
+
+// A full ad message, combining content and its anonymous originator.
+message AdMessage {
+  AdContent content = 1;
+  AdOriginator originator = 2;
+}
