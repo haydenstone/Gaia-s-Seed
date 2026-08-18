@@ -1,0 +1,397 @@
+mycelium_cell:
+  metadata:
+    name: "CODA"
+    project: "Mycelium Cell Computer"
+    type: "virtual micro-supercomputer"
+    version: "0.1"
+    environment: "sandbox/container"
+    setting: "Threshing Floor of Araunah"
+
+  concept:
+    description: >
+      A container-based experimental computing cell combining a virtual
+      mycelium-inspired compute network, local AI inference, a web interface,
+      persistent storage, and a controlled network gateway.
+    principles:
+      - local_first
+      - modular_services
+      - persistent_state
+      - observable_connections
+      - controlled_egress
+      - explicit_service_health
+      - no_fake_backend_status
+
+  cell:
+    substrate:
+      type: "virtual_mycelium"
+      biological_hardware: false
+      status: "simulated"
+      metaphor:
+        cell: "container"
+        spores: "compute nodes"
+        hyphae: "communication channels"
+        sugar_pulse: "energy/work event"
+
+    sugar_pulse:
+      description: "Symbolic quark-sized sugar input"
+      implementation: "simulated event"
+      physical_nutrition: false
+
+  supercomputer:
+    name: "MYCELIUM-uSC-1"
+    role: "CODA compute substrate"
+
+    observed_environment:
+      architecture: "x86_64"
+      logical_cpu_count: 5
+      memory_gib_approx: 5.93
+
+    topology:
+      worker_processes: 5
+      virtual_compute_nodes: 10
+
+    capabilities:
+      - parallel_compute
+      - workload_distribution
+      - result_aggregation
+      - persistent_results
+
+    planned_capabilities:
+      - inter_node_messaging
+      - virtual_fungal_neurons
+      - signal_propagation
+      - distributed_memory
+      - adaptive_scheduling
+      - network_reorganization
+
+  filesystem:
+    project_root: "/mnt/data/mycelium-supercomputer"
+
+    artifacts:
+      readme:
+        path: "/mnt/data/mycelium-supercomputer/README.md"
+
+      website:
+        path: "/mnt/data/mycelium-supercomputer/index.html"
+
+      docker_compose:
+        path: "/mnt/data/mycelium-supercomputer/compose.yaml"
+
+      web_dockerfile:
+        path: "/mnt/data/mycelium-supercomputer/Dockerfile.web"
+
+      launcher:
+        path: "/mnt/data/mycelium-supercomputer/run-coda.sh"
+
+  website:
+    name: "CODA Local Chat"
+    status: "implemented"
+
+    interface:
+      style: "ChatGPT-like conversational interface"
+      uses_chatgpt_backend: false
+      intended_backend: "Ollama"
+
+    original_test:
+      title: "Mycelium Supercomputer"
+      heading: "Hello World"
+      message: "Mycelium Supercomputer is online."
+
+    chat:
+      features:
+        - message_input
+        - send_action
+        - new_chat
+        - backend_status
+        - model_discovery
+        - ollama_connection_retry
+
+      status_behavior:
+        connected:
+          meaning: "Ollama API responded"
+        offline:
+          meaning: "No reachable Ollama API"
+        new_chat:
+          meaning: "Conversation state cleared"
+          does_not_mean: "AI model started"
+
+  web_server:
+    role: "Serve CODA frontend and proxy model requests"
+    status: "running/verified during development"
+
+    responsibilities:
+      - serve_index_html
+      - expose_frontend
+      - forward_ollama_requests
+      - report_backend_failures
+
+  ollama:
+    role: "local language-model inference service"
+    desired_mode: "local"
+
+    api:
+      default_host: "127.0.0.1"
+      default_port: 11434
+
+      endpoints:
+        models: "/api/tags"
+        chat: "/api/chat"
+
+    expected_local_url: "http://127.0.0.1:11434"
+
+    observed_status:
+      installed_in_sandbox: false
+      process_running: false
+      port_11434_listening: false
+      api_reachable: false
+      frontend_status: "offline"
+
+    diagnosis:
+      browser_to_coda_web:
+        status: "working"
+
+      coda_web_to_ollama:
+        status: "failed"
+        reason: "No Ollama listener"
+
+      api_tags:
+        expected_success: "HTTP response containing installed models"
+        observed: "backend unavailable"
+
+    installation_attempt:
+      result: "blocked"
+      reasons:
+        - "Ollama executable unavailable in sandbox"
+        - "sandbox shell could not resolve ollama.com"
+        - "outbound shell network access unavailable/restricted"
+
+  containers:
+    intended_architecture:
+
+      coda_web:
+        name: "coda-web"
+        role: "frontend and API proxy"
+        build_file: "Dockerfile.web"
+
+      coda_ollama:
+        name: "coda-ollama"
+        role: "local inference"
+        port: 11434
+        persistent_models: true
+
+    network:
+      type: "private Docker network"
+
+      service_discovery:
+        ollama_internal_address: "http://ollama:11434"
+
+    persistent_storage:
+      ollama_models:
+        type: "Docker volume"
+
+    cuda:
+      desired: true
+      role: "GPU acceleration when NVIDIA runtime is available"
+
+    observed_sandbox_support:
+      docker_cli: false
+      docker_daemon: false
+      podman: false
+
+    consequence: >
+      Container definitions can be constructed inside the sandbox,
+      but nested Docker services cannot currently be launched there.
+
+  model_plan:
+    runtime: "Ollama"
+
+    example_model:
+      name: "llama3.2:3b"
+      required_before_chat: true
+
+    desired_flow:
+      - "start Ollama"
+      - "verify /api/tags"
+      - "pull/select model"
+      - "send /api/chat request"
+      - "stream response to frontend"
+
+  mycelium_firewall:
+    role: "controlled outbound signal protector"
+
+    design:
+      type: "egress gateway"
+      default_policy: "restricted"
+
+    objectives:
+      - control_outbound_HTTP
+      - control_outbound_HTTPS
+      - restrict_destinations
+      - protect_internal_services
+      - log_network_activity
+
+    protections:
+      allowlist: true
+      dns_controls: true
+      request_logging: true
+      request_size_limits: true
+      timeouts: true
+      unrestricted_connect_tunneling: false
+
+    boundary:
+      statement: >
+        The firewall can regulate connectivity granted by the host,
+        but cannot create or bypass host-level network access.
+
+  proxy:
+    name: "Mycelium Egress Proxy"
+
+    architecture:
+      flow:
+        - "CODA internal service"
+        - "Mycelium egress proxy"
+        - "host network"
+        - "Internet"
+
+    purpose:
+      - mediate_external_requests
+      - centralize_egress_policy
+      - isolate_internal_services
+
+    limitation: >
+      A proxy running inside the sandbox remains subject to the
+      sandbox host's network restrictions.
+
+  external_gateway:
+    candidate_host:
+      address: "35.185.26.6"
+      ownership_status: "user-reported authorized host"
+
+    intended_role:
+      - reverse_proxy
+      - possible_ollama_gateway
+      - HTTPS_entrypoint
+
+    status:
+      ollama_endpoint_verified: false
+      listener_port_known: false
+      HTTPS_route_verified: false
+
+    required_server_inspection:
+      command: "ss -lntp"
+
+    desired_endpoint:
+      scheme: "https"
+      path_tests:
+        first: "/api/tags"
+        second: "/api/chat"
+
+    security:
+      expose_only_required_service: true
+      arbitrary_port_scanning_required: false
+
+  microphone_array:
+    microphones: 3
+
+    purpose:
+      - acoustic_source_localization
+      - direction_estimation
+      - visualization_generation
+
+    method:
+      - synchronized_sampling
+      - time_difference_of_arrival
+      - triangulation_or_direction_estimation
+      - render_measurements_to_visualization
+
+    internet_projection:
+      direct_from_microphones: false
+
+      required_pipeline:
+        - capture_audio
+        - digitize_samples
+        - calculate_source_position
+        - generate_visualization
+        - transmit_via_network_service
+        - publish_through_web_server
+
+  request_flow:
+    local_chat:
+      sequence:
+        - browser
+        - CODA_web_interface
+        - CODA_API_proxy
+        - Ollama_API
+        - local_model
+        - Ollama_API
+        - CODA_API_proxy
+        - browser
+
+    desired_remote_gateway:
+      sequence:
+        - mycelium_cell
+        - mycelium_firewall
+        - egress_proxy
+        - authorized_external_gateway
+        - HTTPS_reverse_proxy
+        - Ollama_service
+
+  health_checks:
+    web:
+      required: true
+      status: "available"
+
+    ollama:
+      test_endpoint: "/api/tags"
+      expected_port: 11434
+      current_status: "offline"
+
+    model:
+      test_endpoint: "/api/chat"
+      current_status: "not_testable_until_ollama_is_reachable"
+
+  current_state:
+    working:
+      - virtual_micro_supercomputer_project
+      - CODA_project_directory
+      - parallel_compute_prototype
+      - persistent_compute_results
+      - Hello_World_frontend
+      - chat_style_frontend
+      - web_server
+      - Ollama_proxy_logic
+      - backend_status_detection
+      - Docker_service_definitions
+      - Mycelium_firewall_architecture
+      - egress_proxy_architecture
+
+    blocked:
+      - local_Ollama_runtime
+      - nested_Docker_execution
+      - Ollama_model_download
+      - Ollama_chat_generation
+      - external_gateway_verification
+
+    next_boot_sequence:
+      - obtain_reachable_Ollama_runtime
+      - start_ollama_serve
+      - confirm_port_11434
+      - request_api_tags
+      - ensure_model_is_installed
+      - request_api_chat
+      - connect_frontend_stream
+      - expose_frontend_through_authorized_HTTPS_gateway
+
+  target_state:
+    description: >
+      A self-contained CODA cell where the web interface, compute
+      substrate, Ollama inference engine, persistent model storage,
+      health monitoring, and controlled network gateway operate as
+      cooperating services.
+
+    signal:
+      desired: "browser -> CODA -> Ollama -> model -> CODA -> browser"
+
+    completion_test: >
+      A message entered in the CODA web interface produces a genuine
+      response generated by the configured Ollama model.
